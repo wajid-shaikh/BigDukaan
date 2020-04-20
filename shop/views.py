@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 
 
-MERCHANT_KEY = '_UdKStzYXAvtmggq';
+MERCHANT_KEY = 'you merchant key';
 
 # Create your views here.
 def index(request):
@@ -131,7 +131,7 @@ def checkout(request):
         # Request Paytm to transfer the amount to your account after payment by user
         param_dict = {
             
-            'MID':'fezdCq12654386461620',
+            'MID':'your merchantid',
             'ORDER_ID': str(order.order_id),
             'TXN_AMOUNT': str(amount),
             'CUST_ID': email,
