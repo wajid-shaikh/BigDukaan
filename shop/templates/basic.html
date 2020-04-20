@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- font-awesome -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<title>{% block title %} {% endblock %}BigDukaan</title>
+			<style>
+				.log{
+					position: absolute;
+					left: 450px;
+					top: 143px;
+					font-size: 20px;
+					cursor: pointer;
+					color: #999;
+				}
+				.log.active {
+					color: dodgerblue;
+				}
+				.sign{
+					position: absolute;
+					left: 450px;
+					top: 230px;
+					font-size: 20px;
+					cursor: pointer;
+					color: #999;
+				}
+				.sign.active {
+					color: dodgerblue;
+				}
+				{% block css %} {% endblock %}
+			</style>
+	</head>
+	<body>
+		{% load static %}
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="hide_navigation">
+			<!-- <img src="{% static 'shop/BigDukaan.jpg' %}" height="60" width="90"> -->
+			<a class="navbar-brand" href="/">BigDukaan</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+			 aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+	
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="/">Home
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/about">About</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/tracker">Track Order</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/blog">Blog</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/contact">Contact</a>
+					</li>
+				</ul>
+				<div class="ml-auto form-inline">
+					{% if user.is_authenticated%}
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+							 aria-expanded="false">
+								Welcome {{request.user}}
+							</a>
+							<div class="dropdown-menu hidethebutton" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="logout/">Logout</a>
+							</div>
+						</li>
+					</ul>
+					{% else %}
+	
+					<!-- Button trigger Login modal -->
+					<!-- i have mannually added hide in every html file in for login and logout hidethebutton -->
+					<button type="button" class="btn btn-danger mr-2 hidethebutton" data-toggle="modal" data-target="#loginmodal">
+						Login
+					</button>
+					<!-- Button trigger Signup modal -->
+					<button type="button" class="btn btn-danger mr-2 hidethebutton" data-toggle="modal" data-target="#signupmodal">
+						SignUp
+					</button>
+					{% endif %}
+					<form method="get" action="/search/" class=" my-2 my-lg-0">
+						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search">
+						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					</form>
+					<button type="button" id="popcart" class="btn btn-warning mx-2" data-container="body" data-toggle="popover" data-placement="bottom"
+					 data-html="true" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Cart
+						<span id="cart" class="badge badge-light">0</span>
+					</button>
+	
+				</div>
+			</div>
+		</nav>
+	
+	
+		<!-- Signup Modal -->
+		<div class="modal fade" id="signupmodal" tabindex="-1" role="dialog" aria-labelledby="signupmodal" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="signupmodaltitle">SignUp</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="signup/" method="post" name="signupForm" onsubmit="return validatesignupForm()"> {% csrf_token %}
+							<div class="form-group" id="validsignupusername">
+								<label for="username">User Name</label>
+								<input type="text" class="form-control" id="username" name="username" placeholder="enter user name">
+								<span class="formerror" style="color: red"> </span>
+							</div>
+							 <div class="form-group" id="validsignupemail">
+								<label for="signupemail">Email address</label>
+								<input type="email" class="form-control" id="signupemail" name="signupemail" placeholder="enter email">
+								<span class="formerror" style="color: red"> </span>
+							</div>
+							<div class="form-group" id="validsignuppass1">
+								<label for="pass1">Password</label>
+								<i class="fa fa-eye sign" id="eye2"></i>
+								<input type="password" class="form-control" id="pass1" name="pass1" placeholder="enter password">
+								<span class="formerror" style="color: red"> </span>
+							</div>
+							<div class="form-group" id="validsignuppass2">
+								<label for="pass2" >Confirm Password</label>
+								<input type="password" class="form-control" id="pass2" name="pass2" placeholder="re-type password">
+								<span class="formerror" style="color: red"> </span>
+							</div>
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<!-- Login Modal -->
+		<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="loginmodaltitle">Login</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="login/" method="post" name="LoginForm" onsubmit="return validateLoginForm()"> {% csrf_token %}
+							<div class="form-group" id="validloginusername">
+								<label for="username">User Name</label>
+								<input type="text" class="form-control" id="loginusername" name="loginusername" placeholder="UserName">
+								<span class="formerror" style="color: red"> </span>
+							</div>
+							<div class="form-group" id="validloginpassword">
+								<label for="loginpassword">Password</label>
+								<i class="fa fa-eye log" id="eye"></i>
+								<input type="password" class="form-control " id="loginpassword" name="loginpassword" placeholder="Password">
+							</div>
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		{% if messages %}
+		{% for message in messages %}
+			<div class="alert alert-{{ message.tags }} alert-dismissible fade show my-0" role="alert">
+				<strong>{{ message }}</strong>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		{% endfor %}
+		{% endif %}
+
+		{% block body %} {% endblock %}
+	
+		<!-- Footer -->
+		<footer class="navbar-expand-lg navbar-dark bg-dark ">
+			<div class="container mt-4">
+				<div class="row ">
+					<div class="col-12 col-md mt-4">
+						<!-- <img src="{% static 'shop/BigDukaan.jpg' %}" height="60" width="90"> -->
+						<h3 class="text-white">BigDukaan.in</h3>
+						<p class="text-secondary">Get in touch with us on : shopizzycares@gmail.com, </p>
+						<p class="text-secondary">Contact on : +91 9049935417</p>
+					</div>
+					<div class="col-6 col-md mt-4">
+						<h5 class="text-white">Get to Know us</h5>
+						<ul class="list-unstyled text-small">
+							<li>
+								<a class="text-secondary" href="/about">About</a>
+							</li>
+							<li>
+								<a class="text-secondary" href="javaScript:void(0)">Locations</a>
+							</li>
+							<li>
+								<a class="text-secondary" href="/contact">Contact</a>
+							</li>
+							<li>
+								<a class="text-secondary" href="javaScript:void(0)">Terms & Conditions</a>
+							</li>
+						</ul>
+					</div>
+					<div class="col-6 col-md mt-4">
+						<h5 class="text-white">Connect with Us</h5>
+						<ul class="list-unstyled text-small">
+							<li>
+								<a class="text-muted" href="https://www.facebook.com/BigDukaan">Facebook</a>
+							</li>
+							<li>
+								<a class="text-muted" href="https://www.twitter.com/BigDukaan">Twitter</a>
+							</li>
+							<li>
+								<a class="text-muted" href="https://www.instagram.com/BigDukaan">Instagram</a>
+							</li>
+							<li>
+								<a class="text-muted" href="https://www.github.com/BigDukaan">Github</a>
+							</li>
+						</ul>
+					</div>
+					<div class="col-6 col-md mt-4">
+						<h5 class="text-white">Resources</h5>
+						<ul class="list-unstyled text-small">
+							<li>
+								<a class="text-muted" href="javaScript:void(0)">Business</a>
+							</li>
+							<li>
+								<a class="text-muted" href="javaScript:void(0)">Quick Delivery</a>
+							</li>
+							<li>
+								<a class="text-muted" href="javaScript:void(0)">BigDukaan Cares</a>
+							</li>
+							<li>
+								<a class="text-muted" href="javaScript:void(0)">Best Offers</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div>
+					<hr>
+					<center>
+						<p class="copyright text-muted">Copyright © BigDukaan.in 2019-2020</p>
+					</center>
+				</div>
+			</div>
+		</footer>
+	
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+		 crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+		 crossorigin="anonymous"></script> {% block js %} {% endblock %}
+	
+	</body>
+		
+</html>
+
+<script>
+	var loginshowpassword = document.getElementById('loginpassword');
+	var eye = document.getElementById('eye');
+	eye.addEventListener('click', togglePass);
+
+	function togglePass(){
+		eye.classList.toggle('active');
+		(loginshowpassword.type == "password") ? loginshowpassword.type = 'text' : loginshowpassword.type = 'password' 
+	}
+
+	var loginshow1password = document.getElementById('pass1');
+	var eye2 = document.getElementById('eye2');
+	eye2.addEventListener('click', togglePass1);
+
+	function togglePass1(){
+		eye2.classList.toggle('active');
+		(loginshow1password.type == "password") ? loginshow1password.type = 'text' : loginshow1password.type = 'password' 
+	}
+
+
+	if (localStorage.getItem('cart') == null) {
+		var cart = {};
+	}
+	else {
+		cart = JSON.parse(localStorage.getItem('cart'));
+	}
+	console.log(cart)
+	var sum = 0;
+	if ($.isEmptyObject(cart)) {
+		
+	}
+	else {
+		for (item in cart) {
+			let qty = cart[item][0];
+			sum = sum + qty;
+		}
+	}
+	document.getElementById('cart').innerHTML = sum;
+
+	{% comment %} function clearErrors() {
+
+		errors = document.getElementsByClassName('formerror');
+		for (let item of errors) {
+			item.innerHTML = "";
+		}
+
+
+	}
+	function seterror(id, error) {
+		//sets error inside tag of id 
+		element = document.getElementById(id);
+		element.getElementsByClassName('formerror')[0].innerHTML = error;
+
+	}
+
+	function validatesignupForm() {
+		var returnval = true;
+		clearErrors();
+
+		//perform validation and if validation fails, set the value of returnval to false
+		var username = document.forms['signupForm']["username"].value;
+		if (username.length < 5) {
+			seterror("validsignupusername", "*length of name is too short");
+			returnval = false;
+		}
+		if (username == "") {
+			seterror("validsignupusername", "*please enter name!");
+			returnval = false;
+		}
+
+		var validsignupemail = document.forms['signupForm']["email"].value;
+		if (validsignupemail.length > 15) {
+			seterror("validsignupemail", "*email length is too long");
+			returnval = false;
+		}
+		if (validsignupemail == "") {
+			seterror("validsignupemail", "*please enter email");
+			returnval = false;
+		}
+
+		var pass1 = document.forms['signupForm']["pass1"].value;
+		if (pass1.length < 6){
+
+			// Quiz: create a logic to allow only those passwords which contain atleast one letter, one number and one special character and one uppercase letter
+			seterror("validsignuppass1", "*password should be atleast 6 characters long!");
+			returnval = false;
+		}
+
+		var pass2 = document.forms['signupForm']["pass2"].value;
+		if (pass2 != pass1){
+			seterror("validsignuppass2", "*password and Confirm password should match!");
+			returnval = false;
+		}
+
+		return returnval;
+	}
+
+
+	function clearLoginErrors() {
+
+		errors = document.getElementsByClassName('formerror');
+		for (let item of errors) {
+			item.innerHTML = "";
+		}
+
+
+	}
+	function setloginerror(id, error) {
+		//sets error inside tag of id 
+		element = document.getElementById(id);
+		element.getElementsByClassName('formerror')[0].innerHTML = error;
+
+	}
+
+	function validateLoginForm() {
+		var returnval = true;
+		clearLoginErrors();
+
+		//perform validation and if validation fails, set the value of returnval to false
+		var loginusername = document.forms['LoginForm']["loginusername"].value;
+		if (username.length < 5) {
+			setloginerror("validloginusername", "*length of name is too short");
+			returnval = false;
+		}
+		if (loginusername == "") {
+			setloginerror("validloginusername", "*please enter name!");
+			returnval = false;
+		}
+
+		var loginpass1 = document.forms['LoginForm']["loginpassword"].value;
+		if (loginpass1.length < 6){
+
+			// Quiz: create a logic to allow only those passwords which contain atleast one letter, one number and one special character and one uppercase letter
+			setloginerror("validloginpassword", "*password should be atleast 6 characters long!");
+			returnval = false;
+		}
+		return returnval;
+	} {% endcomment %}
+
+</script>
+

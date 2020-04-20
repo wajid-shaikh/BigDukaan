@@ -1,0 +1,91 @@
+{% extends 'basic.html' %}
+
+{% block title%}About Us - {% endblock %}
+{% block body %}
+<main role="main">
+
+	<!-- Main jumbotron for a primary marketing message or call to action -->
+	<div class="jumbotron">
+		<div class="container">
+			<h1 class="display-3">BigDukaan!</h1>
+			<p>BigDukaan.in , is an Indian electronic commerce company based in Nashik, India. Founded by Wajid Shaikh, Bhushan Sonawne
+				and Pratik Kadoli in 2020, the company initially focused on book sales, before expanding into other product categories
+				such as consumer electronics, fashion, and lifestyle products. The service competes primarily with Amazon' s Indian subsidiary,
+				and the domestic rival Snapdeal. as of March 2017, Flipkart held a 39.5% market share of India's e-commerce industry.
+				Flipkart is significantly dominant in the sale of apparel (a position that was bolstered by its acquisitions of Myntra
+				and Jabong.com), and was described as being "neck and neck" with Amazon in the sale of electronics and mobile phones.[8]
+				Flipkart also owns PhonePe, a mobile payments service based on the Unified Payments Interface (UPI). In August 2018,
+				U.S.-based retail chain Walmart acquired a 77% controlling stake in Flipkart for US$16 billion, valuing it at $22 billion.</p>
+			<p>
+				<a class="btn btn-primary btn-lg" href="javaScript:void(0)" role="button">Learn more »</a>
+			</p>
+		</div>
+	</div>
+	{% load static %}
+	<div class="container">
+		<!-- Example row of columns -->
+		<div class="row">
+			<div class="col-md-4">
+				<center>
+					<img class="mb-4" src="{% static 'shop/7.jpg' %}" alt="" width="200" height="200" style="border-radius: 50%;">
+					<h2>Er. Wajid Shaikh</h2>
+				</center>
+				<p>
+					<strong>Founder and Technical Director of BigDukaan. </strong>Designer and Developer / Creater and Innovator of BigDukaan.in</p>
+				<center>
+					<p>
+						<a class="btn btn-secondary" href="https://www.linkedin.com/in/wajid-shaikh/" role="button">Linkedin Profile »</a>
+					</p>
+				</center>
+			</div>
+			<div class="col-md-4">
+				<center>
+					<img class="mb-4" src="{% static 'shop/13.jpeg' %}" alt="" width="200" height="200" style="border-radius: 50%;">
+					<h2>Er. Bhushan Sonawane</h2>
+				</center>
+				<p>
+					<strong>Founder and Managing Director of BigDukaan.</strong>responsible for Managing customer and vendor</p>
+				<center>
+					<p>
+						<a class="btn btn-secondary" href="https://www.linkedin.com/in/bhushan-sonawane-950544107" role="button">Linkedin Profile »</a>
+					</p>
+				</center>
+			</div>
+			<div class="col-md-4">
+				<center>
+					<img class="mb-4" src="{% static 'shop/14.jpeg' %}" alt="" width="200" height="200" style="border-radius: 50%;">
+					<h2>Er. Pratik Kadoli</h2>
+				</center>
+				<p>
+					<strong>Founder and Marketing Analyzer of BigDukaan.</strong>Responsible for analyzing the market strategies</p>
+				<center>
+					<p>
+						<a class="btn btn-secondary" href="https://www.linkedin.com/mwlite/in/pratik-kadoli-8091a319a" role="button">Linkedin Profile »</a>
+					</p>
+				</center>
+			</div>
+		</div>
+
+		<hr>
+
+	</div>
+	<!-- /container -->
+
+</main>
+
+
+
+
+
+{% endblock %}
+
+ 
+{% block js %}
+<script>
+jQuery(document).ready(function(){
+ 
+    jQuery(".hidethebutton").hide();
+
+});
+</script>
+{% endblock %}

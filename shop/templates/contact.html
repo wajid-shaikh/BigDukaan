@@ -1,0 +1,101 @@
+{% extends 'basic.html' %} 
+{% block title%}Contact Us - {% endblock %} 
+{% block body %}
+<div class="container my-3">
+	<h3>Contact Us</h3>
+	<form action="/contact/" method="post" name="ContactForm" onsubmit="return validatecontactForm()">{% csrf_token %}
+		<div class="row ">
+			<div class="col " id="validatecontactname">
+				<label for="name">Name:</label>
+				<input type="text" class="form-control " id="name" name='name' placeholder="enter your name">
+				<span class="formerror" style="color: red"> </span>
+			</div>
+			<div class="col" id="validatecontactemail">
+				<label for="name">Email:</label>
+				<input type="text" class="form-control" id="email" name='email' placeholder="enter your email">
+				<span class="formerror" style="color: red"> </span>
+			</div>
+		</div>
+		<div class="form-group " id="validatecontactphone">
+			<label for="name">Phone:</label>
+			<input type="tel" class="form-control" id="phone" name='phone' placeholder="enter your phone number">
+			<span class="formerror" style="color: red"> </span>
+		</div>
+
+
+		<div class="form-group " id="validatecontactquery">
+			<label for="desc">How May We Help You?</label>
+			<textarea class="form-control" id="desc" name='desc' rows="3" placeholder="enter your query"></textarea>
+			<span class="formerror" style="color: red"> </span>
+		</div>
+		<button type="submit" class="btn btn-success mt-4">Submit</button>
+	</form>
+</div>
+{% endblock %} {% block js %}
+<script>
+jQuery(document).ready(function(){
+ 
+    jQuery(".hidethebutton").hide();
+
+});
+	{% if thank %}
+	swal("Thankyou for Contacting us!", "We will get back to you Soon...", "success");
+	{% endif %}
+	function clearErrors() {
+
+		errors = document.getElementsByClassName('formerror');
+		for (let item of errors) {
+			item.innerHTML = "";
+		}
+
+
+	}
+	function seterror(id, error) {
+		//sets error inside tag of id 
+		element = document.getElementById(id);
+		element.getElementsByClassName('formerror')[0].innerHTML = error;
+
+	}
+
+	function validatecontactForm() {
+		var returnval = true;
+		clearErrors();
+
+		//perform validation and if validation fails, set the value of returnval to false
+		var name = document.forms['ContactForm']["name"].value;
+		if (name.length < 5) {
+			seterror("validatecontactname", "*length of name is too short");
+			returnval = false;
+		}
+		if (name == "") {
+			seterror("validatecontactname", "*please enter name!");
+			returnval = false;
+		}
+
+		var email = document.forms['ContactForm']["email"].value;
+		if (email.length > 30) {
+			seterror("validatecontactemail", "*email length is too long");
+			returnval = false;
+		}
+		if (email == "") {
+			seterror("validatecontactemail", "*please enter email");
+			returnval = false;
+		}
+
+		var phone = document.forms['ContactForm']["phone"].value;
+		if (phone.length != 10) {
+			seterror("validatecontactphone", "*phone number should be of 10 digits!");
+			returnval = false;
+		}
+
+		var query = document.forms['ContactForm']["desc"].value;
+		if (query == "") {
+
+			// Quiz: create a logic to allow only those passwords which contain atleast one letter, one number and one special character and one uppercase letter
+			seterror("validatecontactquery", "*please enter your query!");
+			returnval = false;
+		}
+
+		return returnval;
+	}
+</script> {% endblock %}

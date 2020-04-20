@@ -1,0 +1,28 @@
+{% extends 'basic.html' %}
+
+{% block title %} Thank You - BigDukaan{% endblock %}
+
+{% block body %}
+<div class="jumbotron text-center">
+  <h1 class="display-3 text-success">Thank You!</h1>
+  <p class="lead"><strong>Thanks for Ordering with us!</strong> Your Order id is {{id}}. use it to track your order using our Order Tracker!</p>
+  <hr>
+  <p>
+    Having trouble? <a href="/contact">Contact us</a>
+  </p>
+  <p class="lead">
+    <a class="btn btn-primary btn-sm" href="/" role="button">Continue to homepage</a>
+  </p>
+</div>
+
+{% block js %}
+<script>
+{% if thank %}
+jQuery("#hide_navigation").hide();
+// alert('Thanks for Ordering with us, Your Order id is {{id}}. use it to track your order using our Order Tracker');
+// swal("Thanks for Ordering with us!", "Your Order id is {{id}}. use it to track your order using our Order Tracker!", "success");
+localStorage.clear();
+{% endif %}
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'basic.html' %}
+
+{% block title %} Paymentstatus - {% endblock %}
+
+{% block body %}
+
+<div class="container">
+  {% comment %} {{response}} {% endcomment %}
+     <div class="col my-4">
+          <h2>Payment status regarding your order id {{response.ORDERID}}</h2>
+          {% if response.RESPCODE == '01' %}
+            ORDER SUCCESS
+          {% else %}
+            ORDER FAILURE
+          {% endif %}
+     
+     </div>
+     
+</div>
+
+{% endblock %}
+
+{% block js %} 
+<script>
+jQuery(document).ready(function(){
+ 
+    jQuery(".hidethebutton").hide();
+
+});
+</script>
+{% endblock %}
